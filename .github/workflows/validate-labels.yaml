@@ -1,0 +1,39 @@
+name: Validate PR Labels
+
+on:
+  workflow_call:
+    inputs:
+      valid_labels:
+        description: "List of valid labels for versioning"
+        required: true
+        type: array
+      pull_request_number:
+        description: "Pull request number to validate labels for"
+        required: true
+        type: string
+
+jobs:
+  validate_labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for semver labels
+        id: check_labels
+        env:
+          VALID_LABELS: ${{ toJson(inputs.valid_labels) }}
+        run: |
+          # Get the labels from the pull request
+          PR_LABELS=$(gh pr view ${{ inputs.pull_request_number }} --json labels --jq '.labels[].name')
+
+          # Parse and count valid labels
+          MATCH_COUNT=0
+          for label in $PR_LABELS; do
+            if echo "$VALID_LABELS" | grep -q "\"$label\""; then
+              ((MATCH_COUNT++))
+            fi
+          done
+
+          # Validate count
+          if [ "$MATCH_COUNT" -ne 1 ]; then
+            echo "Error: A single semver label (major, minor, or patch) is required."
+            exit 1
+          fi

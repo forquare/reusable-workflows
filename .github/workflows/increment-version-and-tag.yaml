@@ -1,0 +1,59 @@
+name: Increment Version
+
+on:
+  workflow_call:
+    inputs:
+      semver_part:
+        description: 'Part of the semver to increment (major, minor, patch)'
+        required: true
+        type: string
+
+jobs:
+  increment_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+
+      - name: Get the current version
+        id: get_version
+        run: |
+          git fetch --tags
+          CURRENT_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_ENV
+
+      - name: Increment version
+        id: increment
+        run: |
+          PART=${{ inputs.semver_part }}
+          CURRENT_VERSION=${{ env.current_version }}
+
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+          case "$PART" in
+            major)
+              ((VERSION_PARTS[0]++))
+              VERSION_PARTS[1]=0
+              VERSION_PARTS[2]=0
+              ;;
+            minor)
+              ((VERSION_PARTS[1]++))
+              VERSION_PARTS[2]=0
+              ;;
+            patch)
+              ((VERSION_PARTS[2]++))
+              ;;
+            *)
+              echo "Invalid semver part: $PART"
+              exit 1
+              ;;
+          esac
+
+          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${VERSION_PARTS[2]}"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_ENV
+
+      - name: Create Git tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag ${{ env.new_version }}
+          git push origin ${{ env.new_version }}
