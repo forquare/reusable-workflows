@@ -17,8 +17,20 @@ jobs:
       - uses: amannn/action-semantic-pull-request@v5.5.3
         id: lint_pr_title
         with:
-          # Types of commits can be anything from:
+          # Types are taken from:
           # https://github.com/commitizen/conventional-commit-types/blob/v3.0.0/index.json
+          types: |
+            build
+            chore
+            ci
+            docs
+            feat
+            fix
+            perf
+            refactor
+            revert
+            style
+            test
           # Scopes can be anything
           scopes: |
             .*
@@ -49,7 +61,19 @@ jobs:
             |____________ Type
             ```
 
-            Valid types are defined in the [Conventional Commit Types](https://github.com/commitizen/conventional-commit-types/blob/v3.0.0/index.json) specification.
+            Valid types are defined in the [Conventional Commit Types](https://github.com/commitizen/conventional-commit-types/blob/v3.0.0/index.json) specification:
+
+            - build
+            - chore
+            - ci
+            - docs
+            - feat
+            - fix
+            - perf
+            - refactor
+            - revert
+            - style
+            - test
 
             All scopes are valid, and not required.
 
