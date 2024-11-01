@@ -4,7 +4,6 @@ on:
   workflow_call:
 
 permissions:
-  contents: read
   pull-requests: write
 
 concurrency:
@@ -18,9 +17,14 @@ jobs:
       - uses: amannn/action-semantic-pull-request@v5.5.3
         id: lint_pr_title
         with:
+          # Types of commits can be anything from:
+          # https://github.com/commitizen/conventional-commit-types/blob/v3.0.0/index.json
+          # Scopes can be anything
           scopes: |
-            #\d+
+            .*
+          # Scope does not need to be defined
           requireScope: false
+          # Anything labeled with 'dependabot' will be ignored
           ignoreLabels: |
             dependabot
         env:
@@ -39,13 +43,15 @@ jobs:
 
             ```
             build(#8): Add release process
-            ^  ^           ^
-            |  |           |__ Subject
-            |  |_______ Scope optional
+            ^      ^           ^
+            |      |           |__ Subject
+            |      |_______ Scope optional
             |____________ Type
             ```
 
-            Please find additional details [on the wiki](https://github.com/forquare/Manaha-Minder/wiki/Releasing#pr-titles) 
+            Valid types are defined in the [Conventional Commit Types](https://github.com/commitizen/conventional-commit-types/blob/v3.0.0/index.json) specification.
+
+            All scopes are valid, and not required.
 
             Details:
 
