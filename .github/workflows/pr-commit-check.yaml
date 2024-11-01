@@ -1,9 +1,7 @@
 name: Check PR commits with commitlint
 
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_call:
 
 jobs:
   commitlint:
