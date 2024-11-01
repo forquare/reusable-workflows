@@ -31,9 +31,6 @@ jobs:
             revert
             style
             test
-          # Scopes can be anything
-          scopes: |
-            .*
           # Scope does not need to be defined
           requireScope: false
           # Anything labeled with 'dependabot' will be ignored
