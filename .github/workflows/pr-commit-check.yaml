@@ -7,10 +7,10 @@ jobs:
   commitlint:
     container:
       image: commitlint/commitlint:19.5.0
-      volumes:
-        - /github:/github
     runs-on: ubuntu-latest
     steps:
+      - run: touch ~/.gitconfig
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -46,8 +46,6 @@ jobs:
 
       - name: Validate PR commits with commitlint
         run: |
-          pwd
-          find .
           git -C /__w/test-workflows/test-workflows config --list
           git config --global --list
           echo '------------------/\/\/\/\/\/\/\/\/\/\------------------'
