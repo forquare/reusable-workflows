@@ -43,4 +43,7 @@ jobs:
       #    cat commitlint.config.js
 
       - name: Validate PR commits with commitlint
-        run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose --config commitlint.config.js
+        run: |
+          git config --list
+          echo '------------------/\/\/\/\/\/\/\/\/\/\------------------'
+          npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose --config commitlint.config.js
