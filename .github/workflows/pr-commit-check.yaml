@@ -9,8 +9,6 @@ jobs:
       image: commitlint/commitlint:19.5.0
     runs-on: ubuntu-latest
     steps:
-      - run: touch ~/.gitconfig
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -46,6 +44,7 @@ jobs:
 
       - name: Validate PR commits with commitlint
         run: |
+          git config --global --add safe.directory='*'
           git -C /__w/test-workflows/test-workflows config --list
           git config --global --list
           echo '------------------/\/\/\/\/\/\/\/\/\/\------------------'
