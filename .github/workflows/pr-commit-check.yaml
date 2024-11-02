@@ -19,24 +19,27 @@ jobs:
           const Configuration = {
               extends: ['@commitlint/config-conventional'],
               rules: {
-                'type-enum': [
-                  2,
-                  'always',
-                  [
-                    'build',
-                    'chore',
-                    'ci',
-                    'docs',
-                    'feat',
-                    'fix',
-                    'perf',
-                    'refactor',
-                    'revert',
-                    'style',
-                    'test',
+                  'type-enum': [
+                      2,
+                      'always',
+                      [
+                          'build',
+                          'chore',
+                          'ci',
+                          'docs',
+                          'feat',
+                          'fix',
+                          'perf',
+                          'refactor',
+                          'revert',
+                          'style',
+                          'test',
+                      ],
                   ],
-                ],
               },
+              ignores: [
+                  commit => { return commit.includes((Merge branch (.*?) into (.*?)); },
+              ]
           };
           module.exports = Configuration;
           EOF
