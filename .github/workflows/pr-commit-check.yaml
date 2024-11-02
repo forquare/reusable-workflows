@@ -44,7 +44,7 @@ jobs:
 
       - name: Validate PR commits with commitlint
         run: |
-          git config --global --add safe.directory='*'
+          git config --global --add safe.directory '*'
           git -C /__w/test-workflows/test-workflows config --list
           git config --global --list
           echo '------------------/\/\/\/\/\/\/\/\/\/\------------------'
