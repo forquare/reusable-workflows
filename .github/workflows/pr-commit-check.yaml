@@ -3,6 +3,9 @@ name: Check PR commits with commitlint
 on:
   workflow_call:
 
+permissions:
+  pull-requests: write
+
 jobs:
   commitlint:
     container:
@@ -55,7 +58,10 @@ jobs:
           if [ -n "$OUTPUT" ]; then
               echo "$OUTPUT"
               # Print OUTPUT to stage output:
-              echo "message=$OUTPUT" >> $GITHUB_OUTPUT
+              EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+              echo "message<<$EOF" >> $GITHUB_OUTPUT
+              echo "$OUTPUT" >> $GITHUB_OUTPUT
+              echo "$EOF" >> $GITHUB_OUTPUT
               exit 1
           fi
 
