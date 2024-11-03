@@ -15,7 +15,7 @@ jobs:
 
       - name: Configure commitlint
         run: |
-          cat <<EOF > commitlint.config.js
+          cat <<EOF > /tmp/commitlint.config.js
           const Configuration = {
               extends: ['@commitlint/config-conventional'],
               rules: {
@@ -45,9 +45,63 @@ jobs:
           };
           module.exports = Configuration;
           EOF
-          cat commitlint.config.js
 
       - name: Validate PR commits with commitlint
+        id: lint_commits
         run: |
           git config --global --add safe.directory '*'
-          npx commitlint --verbose --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --config commitlint.config.js
+          OUTPUT=$(npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --config /tmp/commitlint.config.js 2>&1)
+          echo "$OUTPUT"
+          if [ $? -ne 0 ]; then
+              # Print OUTPUT to stage output:
+              echo "message=$OUTPUT" >> $GITHUB_OUTPUT
+              exit 1
+          fi
+
+      - uses: marocchino/sticky-pull-request-comment@v2.9.0
+        if: always() && (steps.lint_commits.outputs.message != null)
+        with:
+          header: pr-commit-lint-error
+          message: |
+            Thank you for opening this pull request!
+
+            We require all commits to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) and it looks like one or more of your commits need to be adjusted.
+
+            Each commit should follow the format:
+
+            ```
+            build(#8): Add release process
+            ^      ^           ^
+            |      |           |__ Subject
+            |      |_______ Scope optional
+            |____________ Type
+            ```
+
+            Valid types are defined in the [Conventional Commit Types](https://github.com/commitizen/conventional-commit-types/blob/v3.0.0/index.json) specification:
+
+            - build
+            - chore
+            - ci
+            - docs
+            - feat
+            - fix
+            - perf
+            - refactor
+            - revert
+            - style
+            - test
+
+            All scopes are valid, and not required.
+
+            Details:
+
+            ```
+            ${{ steps.lint_commits.outputs.message }}
+            ```
+
+      # Delete a previous comment when the issue has been resolved
+      - if: ${{ steps.lint_commits.outputs.message == null }}
+        uses: marocchino/sticky-pull-request-comment@v2.9.0
+        with:
+          header: pr-commit-lint-error
+          delete: true
