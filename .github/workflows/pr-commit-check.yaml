@@ -37,6 +37,10 @@ jobs:
                       ],
                   ],
                   'header-case': [0, 'never'],
+                  'subject-case': [0, 'never'],
+                  'body-case': [0, 'never'],
+                  'scope-case': [0, 'never'],
+                  'type-case': [0, 'never'],
               },
           };
           module.exports = Configuration;
