@@ -50,9 +50,8 @@ jobs:
         id: lint_commits
         run: |
           git config --global --add safe.directory '*'
-          OUTPUT=$(npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --config /tmp/commitlint.config.js 2>&1)
-          echo "$OUTPUT"
-          if [ $? -ne 0 ]; then
+          OUTPUT=$(npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --config /tmp/commitlint.config.js 2>&1 || true)
+          if [ -n "$OUTPUT" ]; then
               # Print OUTPUT to stage output:
               echo "message=$OUTPUT" >> $GITHUB_OUTPUT
               exit 1
