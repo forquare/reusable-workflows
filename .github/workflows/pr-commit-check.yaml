@@ -36,6 +36,7 @@ jobs:
                           'test',
                       ],
                   ],
+                  'header-case': [0, 'never'],
               },
           };
           module.exports = Configuration;
