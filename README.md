@@ -1,8 +1,8 @@
 # TODO:
-# Remove pr-title-check
 # Add instructions for:
 #  - Allowing PR modifications
 #  - Using branch protection rules
+#  - generally setting up the repo
 
 
 # Reusable Workflows
