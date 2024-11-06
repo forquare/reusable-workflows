@@ -45,6 +45,9 @@ jobs:
                   'scope-case': [0, 'never'],
                   'type-case': [0, 'never'],
               },
+              ignores: [
+                  (message) => /Signed-off-by: dependabot\[bot]\s+<support@github\.com>$/m.test(message),
+              ],
           };
           module.exports = Configuration;
           EOF

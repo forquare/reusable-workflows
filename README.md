@@ -1,3 +1,10 @@
+# TODO:
+# Remove pr-title-check
+# Add instructions for:
+#  - Allowing PR modifications
+#  - Using branch protection rules
+
+
 # Reusable Workflows
 
 This is a collection of reusable workflows that Ben uses in his projects.
