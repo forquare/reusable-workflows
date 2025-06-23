@@ -71,7 +71,7 @@ jobs:
               exit 1
           fi
 
-      - uses: marocchino/sticky-pull-request-comment@v2.9.2
+      - uses: marocchino/sticky-pull-request-comment@v2.9.3
         if: always() && (steps.lint_commits.outputs.message != null)
         with:
           header: pr-commit-lint-error
@@ -114,7 +114,7 @@ jobs:
 
       # Delete a previous comment when the issue has been resolved
       - if: ${{ steps.lint_commits.outputs.message == null }}
-        uses: marocchino/sticky-pull-request-comment@v2.9.2
+        uses: marocchino/sticky-pull-request-comment@v2.9.3
         with:
           header: pr-commit-lint-error
           delete: true
