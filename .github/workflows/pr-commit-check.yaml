@@ -91,17 +91,17 @@ jobs:
 
             Valid types are defined in the [Conventional Commit Types](https://github.com/commitizen/conventional-commit-types/blob/v3.0.0/index.json) specification:
 
-            - build
-            - chore
-            - ci
-            - docs
-            - feat
-            - fix
-            - perf
-            - refactor
-            - revert
-            - style
-            - test
+            - build (Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm))
+            - chore (Changes to the build process or auxiliary tools and libraries such as documentation generation (example scopes: gulp, broccoli, npm))
+            - ci (Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs))
+            - docs (Documentation only changes)
+            - feat (Changes that introduce new features)
+            - fix (Changes that fix bugs)
+            - perf (Changes that improve performance)
+            - refactor (A code change that neither fixes a bug nor adds a feature)
+            - revert (Changes that revert a previous commit)
+            - style (Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc))
+            - test (Changes that add missing tests or correct existing tests)
 
             All scopes are valid, and not required.
 
