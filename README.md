@@ -3,7 +3,12 @@
 #  - Allowing PR modifications
 #  - Using branch protection rules
 #  - generally setting up the repo
-
+#
+# Check if mathieudutour/github-tag-action bumps correctly when a PR contains multiple commits
+# Checked - takes the biggest change as the version bump
+# NEED - can't bump major?
+#
+# Move README stuff to wiki
 
 # Reusable Workflows
 

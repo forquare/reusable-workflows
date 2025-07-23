@@ -59,7 +59,6 @@ jobs:
           # Set the safe.directory to * to allow all commits to be lint
           git config --global --add safe.directory '*'
           OUTPUT=$(npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --config /tmp/commitlint.config.js 2>&1 || true)
-          #OUTPUT=$(npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --config /tmp/commitlint.config.js 2>&1 || true)
           # If there is an error, print it, stash it, and exit with a non-zero status code
           if [ -n "$OUTPUT" ]; then
               echo "$OUTPUT"
