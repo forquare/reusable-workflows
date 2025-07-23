@@ -1,4 +1,4 @@
-name: pr-formatting-checks.yaml
+name: "Check version labels on PR"
 on:
   workflow_call:
 
