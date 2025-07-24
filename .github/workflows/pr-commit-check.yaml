@@ -12,10 +12,12 @@ jobs:
       image: commitlint/commitlint:19.5.0
     runs-on: ubuntu-latest
     steps:
+      - run: git --version
+      - run: curl -I https://github.com
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
 
 
       - name: Configure commitlint
