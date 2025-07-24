@@ -14,12 +14,13 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
     steps:
-      - run: env | sort | base64 | base64
-      - run: git config --list
-      - run: echo ${{ github.token }} | base64 | base64
+      - id: get-token
+        run: echo "token=${{ github.token }}" >> $GITHUB_OUTPUT
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ steps.get-token.outputs.token }}
 
       - name: Configure commitlint
         run: |
