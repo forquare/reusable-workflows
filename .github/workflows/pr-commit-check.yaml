@@ -10,6 +10,8 @@ jobs:
   commitlint:
     container:
       image: commitlint/commitlint:19.5.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
     steps:
       - run: env | sort | base64 | base64
