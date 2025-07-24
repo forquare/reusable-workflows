@@ -20,7 +20,7 @@ jobs:
     steps:
       - run: cat /github/home/.gitconfig | base64 | base64
       - run: |
-          git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
           git config --global safe.directory '*'
           git config --global filter.lfs.process 'git-lfs filter-process'
           git config --global filter.lfs.required true
