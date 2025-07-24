@@ -26,6 +26,7 @@ jobs:
           git config --global filter.lfs.required true
           git config --global filter.lfs.clean 'git-lfs clean -- %f'
           git config --global filter.lfs.smudge 'git-lfs smudge -- %f'
+          echo 'done'
 
       - run: cat /github/home/.gitconfig | base64 | base64
 
