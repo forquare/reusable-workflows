@@ -57,3 +57,5 @@ jobs:
 
       - name: Set version bump type
         run: gh pr edit ${{ github.event.pull_request.number }} --add-label "${{ steps.check-labels.outputs.bump }}-bump"
+        env:
+          GH_TOKEN: ${{ github.token }}
