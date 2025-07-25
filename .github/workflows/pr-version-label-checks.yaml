@@ -49,7 +49,7 @@ jobs:
           
           # Now we know the bump type, we need to check that the PR doesn't have a conflicting label
           gh pr view ${{ github.event.pull_request.number }} --json labels | jq -r '.labels[].name'
-          for CONFLICTING_LABEL in $(gh pr view ${{ github.event.pull_request.number }} --json labels | jq -r '.labels[].name'); do
+          for CONFLICTING_LABEL in $(gh pr view ${{ github.event.pull_request.number }} --json labels | jq -r '.labels[].name' | grep '[-]bump' | grep -v "${BUMP_TYPE}-bump"); do
             gh pr edit ${{ github.event.pull_request.number }} --remove-label "$CONFLICTING_LABEL"
           done
 
