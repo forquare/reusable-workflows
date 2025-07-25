@@ -18,21 +18,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
     steps:
-      - run: cat /github/home/.gitconfig | base64 | base64
-      - run: |
-          git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
-          git config --global safe.directory '*'
-          git config --global filter.lfs.process 'git-lfs filter-process'
-          git config --global filter.lfs.required true
-          git config --global filter.lfs.clean 'git-lfs clean -- %f'
-          git config --global filter.lfs.smudge 'git-lfs smudge -- %f'
-          echo 'done'
-
-      - run: cat /github/home/.gitconfig | base64 | base64
-
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        #with:
+        #  fetch-depth: 0
 
       - name: Configure commitlint
         run: |
