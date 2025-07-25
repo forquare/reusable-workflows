@@ -20,6 +20,8 @@ jobs:
 
       - name: Check labels
         id: check-labels
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           MAJOR=0
           MINOR=0
