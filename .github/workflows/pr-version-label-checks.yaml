@@ -24,27 +24,36 @@ jobs:
           MAJOR=0
           MINOR=0
           PATCH=0
+          BUMP_TYPE=""
           
           for LABEL in ${{ steps.pr-labels.outputs.labels }}; do
-            if [[ "$LABEL" == "major" ]]; then
+            if [ "$LABEL" = "major" ]; then
               MAJOR=1
-            elif [[ "$LABEL" == "minor" ]]; then
+            elif [ "$LABEL" = "minor" ]; then
               MINOR=1
-            elif [[ "$LABEL" == "patch" ]]; then
+            elif [ "$LABEL" = "patch" ]; then
               PATCH=1
             fi
           done
           
-          if [[ $MAJOR -eq 1 ]]; then
-            echo "bump=major" >> $GITHUB_OUTPUT
-          elif [[ $MINOR -eq 1 ]]; then
-            echo "bump=minor" >> $GITHUB_OUTPUT
-          elif [[ $PATCH -eq 1 ]]; then
-            echo "bump=patch" >> $GITHUB_OUTPUT
+          if [ $MAJOR -eq 1 ]; then
+            BUMP_TYPE='major'
+          elif [ $MINOR -eq 1 ]; then
+            BUMP_TYPE='minor'
+          elif [ $PATCH -eq 1 ]; then
+            BUMP_TYPE='patch'
           else
             echo "error=error" >> $GITHUB_OUTPUT
             exit 1
           fi
+          
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "${BUMP_TYPE}-bump"
+          
+          # Now we know the bump type, we need to check that the PR doesn't have a conflicting label
+          CONFLICTING_LABELS=$(echo "${{ steps.pr-labels.outputs.labels }}" | grep -- '-bump' | grep -v "${BUMP_TYPE}-bump")
+          for CONFLICTING_LABEL in $CONFLICTING_LABELS; do
+            gh pr edit ${{ github.event.pull_request.number }} --remove-label "$CONFLICTING_LABEL"
+          done
 
       - uses: marocchino/sticky-pull-request-comment@773744901bac0e8cbb5a0dc842800d45e9b2b405  # v2.9.4
         if: always() && (steps.check-labels.outputs.error != null)
@@ -60,8 +69,3 @@ jobs:
         with:
           header: pr-labels-error
           delete: true
-
-      - name: Set version bump type
-        run: gh pr edit ${{ github.event.pull_request.number }} --add-label "${{ steps.check-labels.outputs.bump }}-bump"
-        env:
-          GH_TOKEN: ${{ github.token }}
