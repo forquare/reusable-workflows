@@ -54,7 +54,7 @@ jobs:
           
           # Now we know the bump type, we need to check that the PR doesn't have a conflicting label
           echo "labels=${{ steps.pr-labels.outputs.labels }}"
-          CONFLICTING_LABELS=$(echo "${{ steps.pr-labels.outputs.labels }}" | grep 'bump$' | grep -v "${BUMP_TYPE}-bump")
+          CONFLICTING_LABELS=$(echo "${{ steps.pr-labels.outputs.labels }}" | grep 'bump$' | grep -v "${BUMP_TYPE}-bump" || true)
           for CONFLICTING_LABEL in $CONFLICTING_LABELS; do
             gh pr edit ${{ github.event.pull_request.number }} --remove-label "$CONFLICTING_LABEL"
           done
