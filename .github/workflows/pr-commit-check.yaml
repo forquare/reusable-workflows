@@ -9,10 +9,8 @@ permissions:
 
 jobs:
   commitlint:
-   # container:
-   #   image: commitlint/commitlint:19.5.0
-   #   env:
-   #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    container:
+      image: commitlint/commitlint:19.5.0
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,15 +54,15 @@ jobs:
           module.exports = Configuration;
           EOF
 
-      - name: Setup node
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4.4.0
-        with:
-          cache: 'npm'
-          node-version: lts/*
-
-      - name: Install commitlint
-        run: npm install -D @commitlint/cli @commitlint/config-conventional
-
+#      - name: Setup node
+#        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4.4.0
+#        with:
+#          cache: 'npm'
+#          node-version: lts/*
+#
+#      - name: Install commitlint
+#        run: npm install -D @commitlint/cli @commitlint/config-conventional
+#
       - name: Validate PR commits with commitlint
         id: lint_commits
         run: |
