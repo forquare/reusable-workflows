@@ -45,6 +45,7 @@ jobs:
                   'body-case': [0, 'never'],
                   'scope-case': [0, 'never'],
                   'type-case': [0, 'never'],
+                  'body-max-line-length': [0, 'never', 100],
               },
               ignores: [
                   (message) => /Signed-off-by: dependabot\[bot]\s+<support@github\.com>$/m.test(message),
