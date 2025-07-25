@@ -14,6 +14,27 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Ensure labels exist
+        run: |
+          if ! gh label list | grep -q 'major'; then
+            gh label create major --color ff0000 --description "Major version bump"
+          fi
+          if ! gh label list | grep -q 'minor'; then
+            gh label create minor --color 00ff00 --description "Minor version bump"
+          fi
+          if ! gh label list | grep -q 'patch'; then
+            gh label create patch --color 0000ff --description "Patch version bump"
+          fi
+          if ! gh label list | grep -q 'major-bump'; then
+            gh label create major-bump --color ff0000 --description "Major version bump in progress"
+          fi
+          if ! gh label list | grep -q 'minor-bump'; then
+            gh label create minor-bump --color 00ff00 --description "Minor version bump in progress"
+          fi
+          if ! gh label list | grep -q 'patch-bump'; then
+            gh label create patch-bump --color 0000ff --description "Patch version bump in progress"
+          fi
+
       - name: Check labels
         id: check-labels
         env:
