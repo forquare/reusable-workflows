@@ -14,22 +14,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get PR Labels
-        id: pr-labels
-        uses: joerick/pr-labels-action@0543b277721e852d821c6738d449f2f4dea03d5f  # v1.0.9
-
       - name: Check labels
         id: check-labels
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -x
           MAJOR=0
           MINOR=0
           PATCH=0
           BUMP_TYPE=""
           
-          for LABEL in ${{ steps.pr-labels.outputs.labels }}; do
+          for LABEL in $(gh pr view ${{ github.event.pull_request.number }} --json labels | jq -r '.labels[].name'); do
             if [ "$LABEL" = "major" ]; then
               MAJOR=1
             elif [ "$LABEL" = "minor" ]; then
@@ -53,9 +48,8 @@ jobs:
           gh pr edit ${{ github.event.pull_request.number }} --add-label "${BUMP_TYPE}-bump"
           
           # Now we know the bump type, we need to check that the PR doesn't have a conflicting label
-          echo "labels=${{ steps.pr-labels.outputs.labels }}"
-          CONFLICTING_LABELS=$(echo "${{ steps.pr-labels.outputs.labels }}" | grep 'bump$' | grep -v "${BUMP_TYPE}-bump" || true)
-          for CONFLICTING_LABEL in $CONFLICTING_LABELS; do
+          gh pr view ${{ github.event.pull_request.number }} --json labels | jq -r '.labels[].name'
+          for CONFLICTING_LABEL in $(gh pr view ${{ github.event.pull_request.number }} --json labels | jq -r '.labels[].name'); do
             gh pr edit ${{ github.event.pull_request.number }} --remove-label "$CONFLICTING_LABEL"
           done
 
