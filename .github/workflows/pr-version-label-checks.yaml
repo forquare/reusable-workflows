@@ -37,6 +37,23 @@ jobs:
             gh label create patch-bump --color 0000ff --description "Patch version bump in progress"
           fi
 
+      - name: Add labels to PR
+        if: github.event_name == 'pull_request' && github.event.action == 'opened' || github.event.action == 'reopened'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! gh pr view ${{ github.event.pull_request.number }} --json labels | jq -r '.labels[].name' | grep -Eq 'major|minor|patch'; then
+            TYPE=$(gh pr view ${{ github.event.pull_request.number }} --json title | jq -r '.title' | awk -F: '{print $1}' | grep -o '^[a-zA-Z]*')
+          
+            if echo "${TYPE}" | grep -Eiq '^feat$'; then
+              gh pr edit ${{ github.event.pull_request.number }} --add-label 'minor'
+            else
+              gh pr edit ${{ github.event.pull_request.number }} --add-label 'patch'
+            fi
+          
+            sleep 2 # Wait for the label to be added
+          fi
+
       - name: Check labels
         id: check-labels
         env:

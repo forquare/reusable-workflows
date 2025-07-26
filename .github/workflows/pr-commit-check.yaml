@@ -102,8 +102,8 @@ jobs:
 
             Valid types are defined in the [Conventional Commit Types](https://github.com/commitizen/conventional-commit-types/blob/v3.0.0/index.json) specification:
 
-            - build (Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm))
-            - chore (Changes to the build process or auxiliary tools and libraries such as documentation generation (example scopes: gulp, broccoli, npm))
+            - build (Changes that affect the build system or external dependencies)
+            - chore (Changes to the build process or auxiliary tools and libraries such as documentation generation)
             - ci (Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs))
             - docs (Documentation only changes)
             - feat (Changes that introduce new features)
