@@ -3,8 +3,8 @@ name: Release with Go Releaser
 on:
   workflow_call:
     inputs:
-      tag_name:
-        description: 'The tag for the release'
+      release_type:
+        description: 'The type of release to create, e.g., "patch", "minor", "major", or a specific tag name.'
         required: true
         type: string
 
@@ -54,6 +54,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_branches: main
+          default_bump: ${{ inputs.release_name }}
 
   build_and_release:
     needs: tag
