@@ -1,0 +1,7 @@
+name: "Go Checks on PR"
+on:
+  pull_request:
+
+jobs:
+  check_go:
+    uses: forquare/reusable-workflows/.github/workflows/pr-golang-checks.yaml@main

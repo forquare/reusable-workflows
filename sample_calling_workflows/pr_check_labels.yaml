@@ -1,0 +1,18 @@
+name: "Label Check on PR"
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
+      - unlabeled
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  check_commits:
+    uses: forquare/reusable-workflows/.github/workflows/pr-version-label-checks.yaml@main
+
